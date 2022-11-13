@@ -8,7 +8,12 @@ const { pg } = require('../../utils/config');
 
 class UsersService {
   constructor() {
-    this._pool = new Pool({ connectionString: pg.uri });
+    this._pool = new Pool({
+      connectionString: pg.uri,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    });
   }
 
   async addUser({ username, fullname, password }) {
@@ -47,7 +52,7 @@ class UsersService {
 
   async getUserById(userId) {
     const query = {
-      text: 'SELECT id, username, fullname FROM users WHERE id = $1',
+      text: 'SELECT id, username, fullname, photo FROM users WHERE id = $1',
       values: [userId],
     };
 

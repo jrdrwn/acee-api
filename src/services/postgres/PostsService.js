@@ -4,7 +4,12 @@ const { pg } = require('../../utils/config');
 
 class PostsService {
   constructor() {
-    this._pool = new Pool({ connectionString: pg.uri });
+    this._pool = new Pool({
+      connectionString: pg.uri,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    });
   }
 
   async addPost({ owner, title, status, caption, imageUrl }) {

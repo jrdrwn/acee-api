@@ -4,7 +4,12 @@ const config = require('../../utils/config');
 
 class CommentsService {
   constructor() {
-    this._pool = new Pool({ connectionString: config.pg.uri });
+    this._pool = new Pool({
+      connectionString: config.pg.uri,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    });
   }
 
   async addComment({ postId, userId, text }) {

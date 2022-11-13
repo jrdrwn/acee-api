@@ -5,7 +5,12 @@ const { pg } = require('../../utils/config');
 
 class AuthenticationsService {
   constructor() {
-    this._pool = new Pool({ connectionString: pg.uri });
+    this._pool = new Pool({
+      connectionString: pg.uri,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    });
   }
 
   async addRefreshToken(token) {
