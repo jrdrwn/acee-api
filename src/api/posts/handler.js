@@ -49,6 +49,18 @@ class PostsHandler {
     });
     return response;
   }
+
+  async deletePostByIdHandler(request, h) {
+    const { postId } = request.params;
+
+    await this._service.deletePostById(postId);
+    const response = h.response({
+      status: 'success',
+      message: 'Postingan berhasil dihapus',
+    });
+    response.code(201);
+    return response;
+  }
 }
 
 module.exports = PostsHandler;

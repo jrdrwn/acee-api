@@ -1,5 +1,6 @@
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
+const NotFoundError = require('../../exceptions/NotFoundError');
 const { pg } = require('../../utils/config');
 
 class PostsService {
@@ -51,8 +52,17 @@ class PostsService {
 
     return result.rows[0];
   }
-}
 
-module.exports = PostsService;
+  async deletePostById(id) {
+    const query = {
+      text: 'DELETE FROM posts WHERE id = $1 RETURNING id',
+      values: [id],
+    };
+    const result = await this._pool.query(query);
+    if (!result.rowCount) {
+      throw new NotFoundError('Gagal menghapus postingan. Id tidak ditemukan');
+    }
+  }
+}
 
 module.exports = PostsService;

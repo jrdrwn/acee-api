@@ -23,6 +23,14 @@ const routes = (handler) => [
       auth: 'jwt',
     },
   },
+  {
+    method: 'DELETE',
+    path: '/posts/{postId}',
+    handler: (request, h) => handler.deletePostByIdHandler(request, h),
+    options: {
+      auth: 'jwt',
+    },
+  },
 ];
 
 module.exports = routes;
