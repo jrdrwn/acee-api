@@ -14,7 +14,6 @@ class UsersHandler {
       password,
       fullname,
     });
-
     const response = h.response({
       status: 'success',
       message: 'User berhasil ditambahkan',
@@ -29,6 +28,17 @@ class UsersHandler {
   async getUserByIdHandler(request) {
     const { id } = request.params;
     const user = await this._service.getUserById(id);
+    return {
+      status: 'success',
+      data: {
+        user,
+      },
+    };
+  }
+
+  async getMeHandler(request) {
+    const { id: credentialId } = request.auth.credentials;
+    const user = await this._service.getUserById(credentialId);
     return {
       status: 'success',
       data: {
