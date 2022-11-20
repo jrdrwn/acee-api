@@ -23,30 +23,17 @@ class CommentsHandler {
     return response;
   }
 
-  async getCommentByIdHandler(request, h) {
+  async getCommentByIdHandler(request) {
     const { commentId } = request.params;
     const comment = await this._service.getCommentById(commentId);
-    const response = h.response({
-      status: 'success',
-      message: 'Comment berhasil diambil',
-      data: {
-        comment,
-      },
-    });
-    return response;
+    return comment;
   }
 
-  async getCommentsHandler(request, h) {
+  async getCommentsByPostId(request) {
     const { postId } = request.params;
-    const comments = await this._service.getComments(postId);
-    const response = h.response({
-      status: 'success',
-      message: 'Comments berhasil diambil',
-      data: {
-        comments,
-      },
-    });
-    return response;
+    const { limit, offset } = request.query;
+    const comments = await this._service.getComments(postId, { limit, offset });
+    return comments;
   }
 }
 

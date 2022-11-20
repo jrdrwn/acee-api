@@ -17,8 +17,8 @@ const routes = (handler) => [
   },
   {
     method: 'GET',
-    path: '/posts/comment/{postId}',
-    handler: (request, h) => handler.getCommentsHandler(request, h),
+    path: '/comments/post/{postId}',
+    handler: (request, h) => handler.getCommentsByPostId(request, h),
     options: {
       auth: 'jwt',
     },

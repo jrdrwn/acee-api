@@ -26,12 +26,14 @@ class PostsService {
     return result.rows[0].id;
   }
 
-  async getPosts() {
+  async getPosts({ limit, offset }) {
     const query = {
       text: `SELECT posts.*, COUNT(comments.*) as comment_count, users.fullname, users.photo FROM posts
              LEFT OUTER JOIN comments ON comments.post_id = posts.id
              LEFT OUTER JOIN users ON users.id = posts.owner
-             GROUP BY (posts.id, users.fullname, users.photo)`,
+             GROUP BY (posts.id, users.fullname, users.photo)
+             ORDER BY posts.inserted_at DESC LIMIT $1 OFFSET $2`,
+      values: [limit, offset],
     };
     const result = await this._pool.query(query);
 

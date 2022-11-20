@@ -35,12 +35,13 @@ class CommentsService {
     return result.rows[0];
   }
 
-  async getComments(postId) {
+  async getComments(postId, { limit, offset }) {
     const query = {
       text: `SELECT comments.*, users.fullname, users.photo FROM comments
              LEFT OUTER JOIN users ON users.id = comments.user_id
-             WHERE comments.post_id = $1`,
-      values: [postId],
+             WHERE comments.post_id = $1
+             ORDER BY comments.inserted_at DESC LIMIT $2 OFFSET $3`,
+      values: [postId, limit, offset],
     };
     const result = await this._pool.query(query);
     return result.rows;

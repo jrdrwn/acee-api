@@ -25,29 +25,16 @@ class PostsHandler {
     return response;
   }
 
-  async getPostsHandler(request, h) {
-    const posts = await this._service.getPosts();
-    const response = h.response({
-      status: 'success',
-      message: 'Postingan berhasil diambil',
-      data: {
-        posts,
-      },
-    });
-    return response;
+  async getPostsHandler(request) {
+    const { limit, offset } = request.query;
+    const posts = await this._service.getPosts({ limit, offset });
+    return posts;
   }
 
-  async getPostByIdHandler(request, h) {
+  async getPostByIdHandler(request) {
     const { postId } = request.params;
     const post = await this._service.getPostById(postId);
-    const response = h.response({
-      status: 'success',
-      message: 'Postingan berhasil diambil',
-      data: {
-        post,
-      },
-    });
-    return response;
+    return post;
   }
 
   async deletePostByIdHandler(request, h) {

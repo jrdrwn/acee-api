@@ -21,6 +21,7 @@ const PostsService = require('./services/postgres/PostsService');
 
 const comments = require('./api/comments');
 const CommentsService = require('./services/postgres/CommentsService');
+const delay = require('./utils/delay');
 
 const init = async () => {
   const usersService = new UsersService();
@@ -92,8 +93,9 @@ const init = async () => {
       },
     },
   ]);
-  server.ext('onPreResponse', (request, h) => {
+  server.ext('onPreResponse', async (request, h) => {
     // mendapatkan konteks response dari request
+    await delay(1000);
     const { response } = request;
     if (response instanceof Error) {
       // penanganan client error secara internal.
