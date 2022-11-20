@@ -95,7 +95,6 @@ const init = async () => {
   ]);
   server.ext('onPreResponse', async (request, h) => {
     // mendapatkan konteks response dari request
-    await delay(1000);
     const { response } = request;
     if (response instanceof Error) {
       // penanganan client error secara internal.
