@@ -18,9 +18,11 @@ const TokenManager = require('./tokenize/TokenManager');
 
 const posts = require('./api/posts');
 const PostsService = require('./services/postgres/PostsService');
+const PostsValidator = require('./validator/posts');
 
 const comments = require('./api/comments');
 const CommentsService = require('./services/postgres/CommentsService');
+const CommentsValidator = require('./validator/comments');
 const delay = require('./utils/delay');
 
 const init = async () => {
@@ -84,12 +86,14 @@ const init = async () => {
       plugin: posts,
       options: {
         postsService,
+        validator: PostsValidator,
       },
     },
     {
       plugin: comments,
       options: {
         commentsService,
+        validator: CommentsValidator,
       },
     },
   ]);

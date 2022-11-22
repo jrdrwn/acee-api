@@ -1,9 +1,12 @@
 class CommentsHandler {
-  constructor(service) {
+  constructor(service, validator) {
     this._service = service;
+    this._validator = validator;
   }
 
   async postCommentHandler(request, h) {
+    this._validator.validateCommentPayload(request.payload);
+
     const { postId, text } = request.payload;
     const { id: credentialId } = request.auth.credentials;
 
@@ -12,13 +15,7 @@ class CommentsHandler {
       userId: credentialId,
       text,
     });
-    const response = h.response({
-      status: 'success',
-      message: 'Comment berhasil ditambahkan',
-      data: {
-        commentId,
-      },
-    });
+    const response = h.response(commentId);
     response.code(201);
     return response;
   }

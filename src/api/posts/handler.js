@@ -1,9 +1,11 @@
 class PostsHandler {
-  constructor(service) {
+  constructor(service, validator) {
     this._service = service;
+    this._validator = validator;
   }
 
   async postPostHandler(request, h) {
+    this._validator.validatePostPayload(request.payload);
     const { title, status, caption, imageUrl } = request.payload;
     const { id: credentialId } = request.auth.credentials;
 
@@ -14,13 +16,7 @@ class PostsHandler {
       caption,
       imageUrl,
     });
-    const response = h.response({
-      status: 'success',
-      message: 'Postingan berhasil ditambahkan',
-      data: {
-        postId,
-      },
-    });
+    const response = h.response(postId);
     response.code(201);
     return response;
   }
@@ -41,10 +37,7 @@ class PostsHandler {
     const { postId } = request.params;
 
     await this._service.deletePostById(postId);
-    const response = h.response({
-      status: 'success',
-      message: 'Postingan berhasil dihapus',
-    });
+    const response = h.response('DELETED');
     response.code(201);
     return response;
   }

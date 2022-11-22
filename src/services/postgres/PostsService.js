@@ -1,5 +1,6 @@
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
+const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
 const { pg } = require('../../utils/config');
 
@@ -22,7 +23,9 @@ class PostsService {
     };
 
     const result = await this._pool.query(query);
-
+    if (!result.rowCount) {
+      throw new InvariantError('Postingan gagal ditambahkan');
+    }
     return result.rows[0].id;
   }
 
@@ -51,7 +54,9 @@ class PostsService {
     };
 
     const result = await this._pool.query(query);
-
+    if (!result.rowCount) {
+      throw new NotFoundError('Postingan tidak ditemukan');
+    }
     return result.rows[0];
   }
 

@@ -1,5 +1,7 @@
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
+const InvariantError = require('../../exceptions/InvariantError');
+const NotFoundError = require('../../exceptions/NotFoundError');
 const config = require('../../utils/config');
 
 class CommentsService {
@@ -21,6 +23,9 @@ class CommentsService {
     };
 
     const result = await this._pool.query(query);
+    if (!result.rowCount) {
+      throw new InvariantError('Komentar gagal ditambahkan');
+    }
     return result.rows[0].id;
   }
 
@@ -32,6 +37,9 @@ class CommentsService {
       values: [commentId],
     };
     const result = await this._pool.query(query);
+    if (!result.rowCount) {
+      throw new NotFoundError('Komentar tidak ditemukan');
+    }
     return result.rows[0];
   }
 
@@ -44,6 +52,7 @@ class CommentsService {
       values: [postId, limit, offset],
     };
     const result = await this._pool.query(query);
+
     return result.rows;
   }
 }

@@ -14,13 +14,7 @@ class UsersHandler {
       password,
       fullname,
     });
-    const response = h.response({
-      status: 'success',
-      message: 'User berhasil ditambahkan',
-      data: {
-        userId,
-      },
-    });
+    const response = h.response(userId);
     response.code(201);
     return response;
   }
@@ -28,34 +22,19 @@ class UsersHandler {
   async getUserByIdHandler(request) {
     const { id } = request.params;
     const user = await this._service.getUserById(id);
-    return {
-      status: 'success',
-      data: {
-        user,
-      },
-    };
+    return user;
   }
 
   async getMeHandler(request) {
     const { id: credentialId } = request.auth.credentials;
     const user = await this._service.getUserById(credentialId);
-    return {
-      status: 'success',
-      data: {
-        user,
-      },
-    };
+    return user;
   }
 
   async getUsersByUsernameHandler(request) {
     const { username = '' } = request.query;
     const users = await this._service.getUsersByUsername(username);
-    return {
-      status: 'success',
-      data: {
-        users,
-      },
-    };
+    return users;
   }
 }
 
