@@ -42,6 +42,22 @@ class UsersHandler {
     const userId = await this._service.deleteUser(credentialId);
     return userId;
   }
+
+  async updateUserHandler(request, h) {
+    const { photo, fullname, username } = request.payload;
+    const { id: credentialId } = request.auth.credentials;
+    await this._service.updateUser(credentialId, { photo, fullname, username });
+
+    return h.response('UPDATED');
+  }
+
+  async updateUserPasswordHandler(request, h) {
+    const { password } = request.payload;
+    const { id: credentialId } = request.auth.credentials;
+    await this._service.updateUser(credentialId, { password });
+
+    return h.response('UPDATED');
+  }
 }
 
 module.exports = UsersHandler;

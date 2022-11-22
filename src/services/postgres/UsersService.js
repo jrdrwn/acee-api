@@ -110,6 +110,35 @@ class UsersService {
 
     return result.rows[0].id;
   }
+
+  async updateUser(userId, { photo, fullname, username }) {
+    const query = {
+      text: 'UPDATE users SET photo = $1, fullname = $2, username = $3 WHERE id = $4',
+      values: [photo, fullname, username, userId],
+    };
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('User tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
+
+  async updateUserPassword(userId, { password }) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const query = {
+      text: 'UPDATE users SET password = $1 WHERE id = $2',
+      values: [hashedPassword, userId],
+    };
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('User tidak ditemukan');
+    }
+
+    return result.rows[0];
+  }
 }
 
 module.exports = UsersService;

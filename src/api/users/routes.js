@@ -36,6 +36,22 @@ const routes = (handler) => [
       auth: 'jwt',
     },
   },
+  {
+    method: 'PUT',
+    path: '/users',
+    handler: (request, h) => handler.updateUserHandler(request, h),
+    options: {
+      auth: 'jwt',
+    },
+  },
+  {
+    method: 'PUT',
+    path: '/users/passwd',
+    handler: (request, h) => handler.updateUserpasswordHandler(request, h),
+    options: {
+      auth: 'jwt',
+    },
+  },
 ];
 
 module.exports = routes;

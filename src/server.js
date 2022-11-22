@@ -23,6 +23,10 @@ const PostsValidator = require('./validator/posts');
 const comments = require('./api/comments');
 const CommentsService = require('./services/postgres/CommentsService');
 const CommentsValidator = require('./validator/comments');
+
+const friendships = require('./api/friendships');
+const FriendshipsService = require('./services/postgres/FriendshipsService');
+
 const delay = require('./utils/delay');
 
 const init = async () => {
@@ -30,6 +34,7 @@ const init = async () => {
   const authenticationsService = new AuthenticationsService();
   const postsService = new PostsService();
   const commentsService = new CommentsService();
+  const friendshipsService = new FriendshipsService();
 
   const server = Hapi.server({
     port: config.app.port,
@@ -94,6 +99,12 @@ const init = async () => {
       options: {
         commentsService,
         validator: CommentsValidator,
+      },
+    },
+    {
+      plugin: friendships,
+      options: {
+        friendshipsService,
       },
     },
   ]);
