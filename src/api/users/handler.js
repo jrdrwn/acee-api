@@ -36,6 +36,12 @@ class UsersHandler {
     const users = await this._service.getUsersByUsername(username);
     return users;
   }
+
+  async deleteUserHandler(request) {
+    const { id: credentialId } = request.auth.credentials;
+    const userId = await this._service.deleteUser(credentialId);
+    return userId;
+  }
 }
 
 module.exports = UsersHandler;

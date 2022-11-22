@@ -8,6 +8,9 @@ const routes = (handler) => [
     method: 'GET',
     path: '/users/{id}',
     handler: (request, h) => handler.getUserByIdHandler(request, h),
+    options: {
+      auth: 'jwt',
+    },
   },
   {
     method: 'GET',
@@ -21,6 +24,17 @@ const routes = (handler) => [
     method: 'GET',
     path: '/users',
     handler: (request, h) => handler.getUsersByUsernameHandler(request, h),
+    options: {
+      auth: 'jwt',
+    },
+  },
+  {
+    method: 'DELETE',
+    path: '/users',
+    handler: (request, h) => handler.deleteUserHandler(request, h),
+    options: {
+      auth: 'jwt',
+    },
   },
 ];
 

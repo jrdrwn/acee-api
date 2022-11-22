@@ -95,6 +95,21 @@ class UsersService {
     const result = await this._pool.query(query);
     return result.rows;
   }
+
+  async deleteUser(userId) {
+    const query = {
+      text: 'DELETE FROM users WHERE id = $1 RETURNING id',
+      values: [userId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('User tidak ditemukan');
+    }
+
+    return result.rows[0].id;
+  }
 }
 
 module.exports = UsersService;
