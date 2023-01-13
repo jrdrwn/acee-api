@@ -22,8 +22,8 @@ class PostsHandler {
   }
 
   async getPostsHandler(request) {
-    const { limit, offset } = request.query;
-    const posts = await this._service.getPosts({ limit, offset });
+    const { limit, offset, userId } = request.query;
+    const posts = await this._service.getPosts({ limit, offset, userId });
     return posts;
   }
 
